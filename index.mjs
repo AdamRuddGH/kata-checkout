@@ -1,6 +1,6 @@
 
 
-class Item {
+export class StoreItem {   //looks like Item is a reserved name
     
 
     constructor(itemId, itemName, itemPrice) {
@@ -13,7 +13,7 @@ class Item {
     }
   }
 
-class MultiProductDeals {
+export class MultiProductDeals {
     constructor(itemId, itemName, qty, dealType, deal) {
         this.item = item; //item class
         this.qty = qty;
@@ -23,7 +23,7 @@ class MultiProductDeals {
 
 }
 
-class Purchases {
+export class Purchases {
     constructor() {
         this.items = [];
         this.grossPrice = 0.00;
