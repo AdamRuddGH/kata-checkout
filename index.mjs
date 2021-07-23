@@ -10,11 +10,11 @@ export class StoreItem {
   }
 
 export class MultiProductDeals {
-    constructor(itemId, itemName, qty, dealType, deal) {
-        this.item = item; //item class
-        this.qty = qty;
-        this.dealType = dealType;
-        this.deal = deal;
+    constructor(itemId, qty, dealPrice, dealMessage) {
+        this.itemId = itemId; // item class
+        this.qty = qty; // eg. 3
+        this.dealPrice = dealPrice; // eg. "1.20"
+        this.dealMessage = dealMessage; // eg. "3 apples for 1.20"
     }
 
 }
@@ -38,30 +38,37 @@ export class Checkout {
         
     }
 
-
-    // populateCheckoutList() {
-    //     console.log("populating list")
-    //     const newItems = [
-    //         {itemId: 101, itemName: "Apple", itemPrice: 3.95},
-    //         {itemId: 102, itemName: "Bread", itemPrice: 0.20},
-    //         {itemId: 200, itemName: "Yoghurt", itemPrice: 5.00},
-    //         {itemId: 301, itemName: "Soap", itemPrice: 1.20},
-    //         {itemId: 103, itemName: "Kitkat", itemPrice: 1.95},
-    //         {itemId: 302, itemName: "Tissues", itemPrice: 4.25}
-            
-    //         // new StoreItem(101,"Bread",3.95), // this doesn't seem to execute before being added
-    //         // new StoreItem(102,"Banana",0.20),
-    //         // new StoreItem(200,"Yoghurt",5.00),
-    //         // new StoreItem(301,"Soap",1.20),
-    //         // new StoreItem(103,"Kitkat",1.95),
-    //         // new StoreItem(302,"Tissues",4.25)
-    //     ]
-    //     for (let i = 0; i < newItems.length; i++) {
-    //         const myItem = new StoreItem(newItems[i].itemId,newItems[i].itemName,newItems[i].itemPrice);
-    //         this.items.push(myItem);
-    //         // text += cars[i] + "<br>";
-    //       }
+    countNumItems() {
+        // calculates the number of items within the checkout items list
+        // returns array of itemId,count
+        // used primarily for the caclulateDiscount function
+        // {itemId: qty, itemId: qty, //etc }
         
-    // }
-}
+        let numItems = {};
+        // {
+        //   itemId: qty,
+        // }
 
+        for (let i = 0; i < this.items.length; i++) {
+            if (this.items[i].itemId in numItems) {
+                numItems[this.items[i].itemId] += 1;
+            }
+            else {
+                numItems[this.items[i].itemId] = 1;
+            }
+                
+          };
+          return numItems;
+    };
+        
+};
+
+
+export var inventory = [
+    
+]
+
+export var deals = [
+    new MultiProductDeals(101, 3, 1.2, "3 apples for $1.20"),
+    new MultiProductDeals(103, 2, 1, "2 Kitkats for $1.00")
+];
