@@ -1,15 +1,11 @@
 
 
-export class StoreItem {   //looks like Item is a reserved name
-    
-
+export class StoreItem { 
+    //For each Item which will be part of the checkout
     constructor(itemId, itemName, itemPrice) {
       this.itemId = itemId;
       this.itemName = itemName;
       this.itemPrice = itemPrice;
-    }
-    pingpong() {
-        console.log("This is the Item Class")
     }
   }
 
@@ -23,7 +19,7 @@ export class MultiProductDeals {
 
 }
 
-export class Purchases {
+export class Checkout {
     constructor() {
         this.items = [];
         this.grossPrice = 0.00;
@@ -41,7 +37,31 @@ export class Purchases {
         originalDiscount = this.discount;
         
     }
+
+
+    // populateCheckoutList() {
+    //     console.log("populating list")
+    //     const newItems = [
+    //         {itemId: 101, itemName: "Apple", itemPrice: 3.95},
+    //         {itemId: 102, itemName: "Bread", itemPrice: 0.20},
+    //         {itemId: 200, itemName: "Yoghurt", itemPrice: 5.00},
+    //         {itemId: 301, itemName: "Soap", itemPrice: 1.20},
+    //         {itemId: 103, itemName: "Kitkat", itemPrice: 1.95},
+    //         {itemId: 302, itemName: "Tissues", itemPrice: 4.25}
+            
+    //         // new StoreItem(101,"Bread",3.95), // this doesn't seem to execute before being added
+    //         // new StoreItem(102,"Banana",0.20),
+    //         // new StoreItem(200,"Yoghurt",5.00),
+    //         // new StoreItem(301,"Soap",1.20),
+    //         // new StoreItem(103,"Kitkat",1.95),
+    //         // new StoreItem(302,"Tissues",4.25)
+    //     ]
+    //     for (let i = 0; i < newItems.length; i++) {
+    //         const myItem = new StoreItem(newItems[i].itemId,newItems[i].itemName,newItems[i].itemPrice);
+    //         this.items.push(myItem);
+    //         // text += cars[i] + "<br>";
+    //       }
+        
+    // }
 }
 
-// const my_item = new Item(1,"ss",2);
-// my_item.pingpong()
