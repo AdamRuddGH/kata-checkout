@@ -3,7 +3,7 @@ import * as Checkout from "../index.mjs";
 
 describe('Item creation', () => {
 
-    const myItem = new Checkout.StoreItem(281, "Apple", 0.50)
+    const myItem = new Checkout.StoreItem("101")
     it('should initialise with all fields',() => {        
          expect(myItem.itemId).to.equal(281);
          expect(myItem.itemName).to.equal("Apple");
@@ -17,15 +17,15 @@ describe('Checkout creation', () => {
     const myCheckout = new Checkout.Checkout;
     
     const newItems = [
-        {itemId: "101", itemName: "Apple", itemPrice: 0.50},
-        {itemId: "102", itemName: "Bread", itemPrice: 0.20},
-        {itemId: "200", itemName: "Yoghurt", itemPrice: 5.00},
-        {itemId: "301", itemName: "Soap", itemPrice: 1.20},
-        {itemId: "103", itemName: "Kitkat", itemPrice: 1.95},
-        {itemId: "103", itemName: "Kitkat", itemPrice: 1.95},
-        {itemId: "302", itemName: "Tissues", itemPrice: 4.25},
-        {itemId: "101", itemName: "Apple", itemPrice: 0.50},
-        {itemId: "101", itemName: "Apple", itemPrice: 0.50},
+        "101",
+        "102",
+        "200",
+        "301",
+        "103",
+        "103",
+        "302",
+        "101", 
+        "101"
     ];
     for (let i = 0; i < newItems.length; i++) {
         const myItem = new Checkout.StoreItem(newItems[i].itemId,newItems[i].itemName,newItems[i].itemPrice);
@@ -47,7 +47,7 @@ describe('Checkout creation', () => {
         expect(itemCount["103"]).to.equal(2);
     });
 
-    console.log(Checkout.deals)
+    
 
    });
 

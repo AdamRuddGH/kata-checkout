@@ -1,3 +1,5 @@
+import { inventory } from "./inventory.mjs";
+import { Logger } from "./logger.mjs";
 
 
 export class StoreItem { 
@@ -22,19 +24,46 @@ export class MultiProductDeals {
 export class Checkout {
     constructor() {
         this.items = [];
-        this.grossPrice = 0.00;
-        this.discount = 0.00;
-        this.netPrice = 0.00;
+        this.ttlNoDiscount = 0.00;
+        this.ttlDiscount = 0.00;
+        this.ttlWithDiscount = 0.00;
+    }
+
+    addItem(itemId) {
+        //add an item to the checkout list
+        itemId = itemId.toString();
+        if (this.validateItem(itemId) == true ) {
+            
+            try {
+                this.items.push(itemId);
+            }
+            catch (exception) {
+                Logger.log(exception);
+            }
+            calculateDiscount();
+
+        }
+    }
+
+    validateItem(itemId) {
+        //returns true if item is in Inventory
+        for (let itemIndex = 0; itemIndex < inventory.length; itemIndex++) {
+            if (inventory[itemIndex].itemId == itemId){
+                return true
+            }
+            else {
+                return false
+            }
+          }
     }
 
     calculateDiscount() {
         //calculate the discount of items based on the available Deals
-
         //check the multi product deal ids for matches to items in receipt
         //if there is a match, check for the deal specifics.
         //if the number of items // deal qty >=1 (floor division), 
         //then apply the difference in price to the discount
-        originalDiscount = this.discount;
+        originalDiscount = this.ttlDiscount;
         
     }
 
@@ -64,9 +93,9 @@ export class Checkout {
 };
 
 
-export var inventory = [
+// export var inventory = [
     
-]
+// ]
 
 export var deals = [
     new MultiProductDeals(101, 3, 1.2, "3 apples for $1.20"),
