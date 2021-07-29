@@ -1,5 +1,6 @@
 
 const inventory =  require("./inventory.js").inventory;
+const deals = require("./multiProductDeals.js").deals;
 const CheckoutLogger = require("./logger.js").CheckoutLogger;
 
 exports.Checkout = class Checkout {
@@ -15,7 +16,7 @@ exports.Checkout = class Checkout {
     addItem(itemId) {
         //add an item to the checkout list
         itemId = itemId.toString();
-        if (this.validateItem(itemId) != undefined ) {
+        if (this.getItem(itemId) != undefined ) {
             
             try {
                 this.items.push(itemId);
@@ -31,46 +32,68 @@ exports.Checkout = class Checkout {
         }
     }
 
-    validateItem(searchItemId) {
+    getItem(searchItemId) {
         //returns item if item is in Inventory. Else return false
         for (let itemIndex = 0; itemIndex < inventory.length; itemIndex++) {
-            if (inventory[itemIndex].itemId == itemId){
-                return true
-            }
-            else {
-                return false
+            let currentInventoryItem = inventory[itemIndex];
+            if (currentInventoryItem.itemId.toString() === searchItemId){
+                return currentInventoryItem;
             }
           }
+        return undefined;
     }
 
-    calculateDiscount() {
+    calculateDiscount(self) {
         //calculate the discount of items based on the available Deals
         //check the multi product deal ids for matches to items in receipt
         //if there is a match, check for the deal specifics.
         //if the number of items // deal qty >=1 (floor division), 
         //then apply the difference in price to the discount
         // originalDiscount = this.ttlDiscount;
-        return "calculateDiscount() is not built yet"
+
+        // console.log("show counted items");
+        const countedItems = this.countNumItems();
+        // console.log(countedItems);
+
+        let discountTtl = 0;
+
+        for (const [key, value] of Object.entries(countedItems)) {
+            console.log(`here's calculatediscount: ${key}: ${value}`);
+
+            for (let i = 0; i < deals.length; i++) {
+                const singleDeal = deals[i];
+                
+                if (singleDeal.itemId === key && value >= singleDeal.qty) {
+                    multiplier =  Math.floor(value / singleDeal.qty); //get the floor of the division
+                    const discount = this.getItem(singleDeal.itemId) * singleDeal.qty * multiplier * -1;
+                    const dealPrice = multiplier * singleDeal.dealPrice;
+
+                    discountTtl += (dealPrice + discount);
+                }
+                //get the item original price then subtract that 
+            }
+          }
+
+        this.ttlDiscount = discountTtl;
         
     }
 
-    countNumItems() {
+    countNumItems(self) {
         // calculates the number of items within the checkout items list
         // returns array of itemId,count
         // used primarily for the caclulateDiscount function
         // {itemId: qty, itemId: qty, //etc }
         
         let numItems = {};
-        // {
-        //   itemId: qty,
-        // }
 
         for (let i = 0; i < this.items.length; i++) {
-            if (this.items[i].itemId in numItems) {
-                numItems[this.items[i].itemId] += 1;
+            const itemsSingleItem = this.items[i];
+
+            if (itemsSingleItem in numItems) {
+                numItems[itemsSingleItem] += 1;
             }
             else {
-                numItems[this.items[i].itemId] = 1;
+                numItems[itemsSingleItem] = 1;
             }
                 
           };

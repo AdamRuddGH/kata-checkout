@@ -1,11 +1,11 @@
-const { assert } = require('chai');
+// const { assert } = require('chai');
+var assert = require('assert');
+const inventory = require('../src/inventory.js').inventory;
 
 describe('Check inventory', () => {
 
-    const inventory = require('../src/inventory.js').inventory;
-
-    it('Inventory array should not be empty',() => {        
-         (inventory.length).should.not.equal(0);
-         (inventory).should.not.equal(undefined);
+    it('Inventory array should not be empty or undefined',() => {       
+        assert.notEqual(inventory.length,0);
+        assert.notEqual(inventory,undefined);
         });
     });

@@ -2,6 +2,9 @@
 
 
 exports.deals = [
-    new IndexModule.MultiProductDeals(101, 3, 1.2, "3 apples for $1.20"),
-    new IndexModule.MultiProductDeals(103, 2, 1, "2 Kitkats for $1.00")
+    new MultiProductDeals("100", 2, 1.10),  //orange
+    new MultiProductDeals("101", 5,  2.00), //apple
+    new MultiProductDeals("102", 2, 0.30), //bread
+    new MultiProductDeals("103", 3,  1.95), //kitkat
+    new MultiProductDeals("104", 10,  9.50) //mars bar
 ];

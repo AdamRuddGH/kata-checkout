@@ -27,17 +27,23 @@ describe('Checkout creation', () => {
         assert.equal(myCheckout.items.length,9);
        });
 
-    it('should show 3 Apples, 2 Kitkats',() => {
-        let itemCount = myCheckout.countNumItems();
+    
+
+    it('should be able to find an item by ID - item with id 101',() => {
+        assert.equal(myCheckout.validateItem('101').itemId,'101');
+    });
+
+    it('Counting: should show 3 Apples (101 x3), 2 Kitkats (103x2)',() => {
+        const itemCount = myCheckout.countNumItems();
         assert.equal(itemCount["101"],3);
         assert.equal(itemCount["103"],2);
     });
 
-    it('should be able to find an item',() => {
-        assert.equal(myCheckout.validateItem('101').itemId,'101');
+    it('Discount Calculation: should be able to find items in the list of counted items',() => {
+        myCheckout.calculateDiscount();
+        console.log(myCheckout.ttlDiscount);
+        // assert.equal(myCheckout.ttlDiscount,);
     });
-
-    
 
    });
 
