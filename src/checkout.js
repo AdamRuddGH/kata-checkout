@@ -1,7 +1,8 @@
 
 const inventory =  require("./inventory.js").inventory;
-const deals = require("./multiProductDeals.js").deals;
+const deals = require("./deals.js").deals;
 const CheckoutLogger = require("./logger.js").CheckoutLogger;
+
 
 exports.Checkout = class Checkout {
     constructor() {
@@ -25,7 +26,6 @@ exports.Checkout = class Checkout {
                 this.checkoutlogger.log(exception);
             }
             this.calculateDiscount();
-
         }
         else {
             this.checkoutlogger.log(`Error adding item: ${itemId} not valid`)
@@ -33,7 +33,7 @@ exports.Checkout = class Checkout {
     }
 
     getItem(searchItemId) {
-        //returns item if item is in Inventory. Else return false
+        //returns item if item is in Inventory. Else return undefined
         for (let itemIndex = 0; itemIndex < inventory.length; itemIndex++) {
             let currentInventoryItem = inventory[itemIndex];
             if (currentInventoryItem.itemId.toString() === searchItemId){
@@ -41,6 +41,13 @@ exports.Checkout = class Checkout {
             }
           }
         return undefined;
+    }
+
+    calculateTtl(self) {
+        //calculate the total of all items in the checkout, without factoring in any discounts
+        const priceTtl = 0;
+
+        this.ttlNoDiscount = priceTtl;
     }
 
     calculateDiscount(self) {
@@ -51,26 +58,23 @@ exports.Checkout = class Checkout {
         //then apply the difference in price to the discount
         // originalDiscount = this.ttlDiscount;
 
-        // console.log("show counted items");
-        const countedItems = this.countNumItems();
-        // console.log(countedItems);
 
+        const countedItems = this.countNumItems();
         let discountTtl = 0;
 
         for (const [key, value] of Object.entries(countedItems)) {
-            console.log(`here's calculatediscount: ${key}: ${value}`);
+
 
             for (let i = 0; i < deals.length; i++) {
                 const singleDeal = deals[i];
-                
-                if (singleDeal.itemId === key && value >= singleDeal.qty) {
-                    multiplier =  Math.floor(value / singleDeal.qty); //get the floor of the division
-                    const discount = this.getItem(singleDeal.itemId) * singleDeal.qty * multiplier * -1;
-                    const dealPrice = multiplier * singleDeal.dealPrice;
 
-                    discountTtl += (dealPrice + discount);
+                if (singleDeal.itemId === key && value >= singleDeal.qty) {
+                    
+                    const multiplier =  Math.floor(value / singleDeal.qty); //get the floor of the division
+                    const discount = this.getItem(singleDeal.itemId).itemPrice * singleDeal.qty * multiplier * -1;
+                    const dealPrice = multiplier * singleDeal.dealPrice;
+                    discountTtl += (dealPrice + discount); //this is experiencing some precision issues with float
                 }
-                //get the item original price then subtract that 
             }
           }
 
