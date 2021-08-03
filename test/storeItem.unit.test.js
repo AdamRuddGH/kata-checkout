@@ -11,7 +11,26 @@ describe('StoreItem creation', () => {
         });
 
     it('should not create an item without a name or price', () => {
+        try {
+            const myItem = new StoreItem("101");
+        }
+        catch (exception) {
+            assert.equal(exception, "StoreItem must contain values for itemId, itemName, itemPrice");
+        }
+
         
-        //to do
     });
+
+    it('should not create an item without a name or price', () => {
+        try {
+            const myItem = new StoreItem(022,22,"hello");
+        }
+        catch (exception) {
+            assert.equal(exception, "StoreItem must contain values for itemId, itemName, itemPrice");
+        }
+        
+    });
+
+
+
 });

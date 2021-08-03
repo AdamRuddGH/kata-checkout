@@ -25,7 +25,7 @@ exports.Checkout = class Checkout {
             catch (exception) {
                 this.checkoutlogger.log(exception);
             }
-            this.calculateDiscount();
+            this.calculateAllTtls();
         }
         else {
             this.checkoutlogger.log(`Error adding item: ${itemId} not valid`)
@@ -43,12 +43,34 @@ exports.Checkout = class Checkout {
         return undefined;
     }
 
-    calculateTtl(self) {
+    calculateAllTtls(self) {
+        this.calculateTtlNoDiscount();
+        this.calculateDiscount();
+        if ( this.ttlDiscount == undefined || this.ttlNoDiscount == undefined) {
+            this.checkoutlogger.log(`error: ttlDiscount or ttlNoDiscount is undefined. ttlDiscount: ${this.ttlDiscount}, ttlNoDiscount: ${this.ttlNoDiscount}`)
+        }
+        else {
+            this.ttlWithDiscount = this.ttlDiscount + this.ttlNoDiscount;
+        }
+    };    
+
+    calculateTtlNoDiscount(self) {
         //calculate the total of all items in the checkout, without factoring in any discounts
-        const priceTtl = 0;
+        let priceTtl = 0;
+        const countedItems = this.countNumItems();
+        
+        for (const [key, value] of Object.entries(countedItems)) {
+            const purchasedItem = this.getItem(key);
+            if (purchasedItem == undefined) {
+                this.checkoutlogger.log(`unable to lookup item ${key} with getItem`);
+            }
+            else {
+                priceTtl += purchasedItem.itemPrice * value; //items * muliplied
+            }
+        }
 
         this.ttlNoDiscount = priceTtl;
-    }
+    };
 
     calculateDiscount(self) {
         //calculate the discount of items based on the available Deals
@@ -103,5 +125,7 @@ exports.Checkout = class Checkout {
           };
           return numItems;
     };
+
+    
         
 };
